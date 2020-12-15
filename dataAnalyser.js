@@ -1,6 +1,8 @@
 const data = require('./data.json');
 const operations = require('./operations.json');
 
+const { cities } = data;
+let results = [];
 operations.operations.forEach((operator) => {
   if (operator.name === 'important') {
     const regex = new RegExp(operator.filter);
@@ -17,6 +19,21 @@ operations.operations.forEach((operator) => {
       name: operator.name,
       value: averagePopulation
     };
+    results.push(result);
+  } else if (operator.name === 'information') {
+    const filteredArray = filterArray(cities, operator.filter);
+    console.log(filteredArray);
+    let sum = 0;
+    filteredArray.forEach((city) => (sum += city[operator.attrib]));
+    let result = {
+      name: operator.name,
+      value: sum
+    };
     console.log(result);
   }
 });
+
+function filterArray([...cities], filter) {
+  const regex = new RegExp(filter);
+  return cities.filter((entry) => entry.name.match(regex));
+}
