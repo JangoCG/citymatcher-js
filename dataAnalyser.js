@@ -3,37 +3,62 @@ const operations = require('./operations.json');
 
 const { cities } = data;
 let results = [];
-operations.operations.forEach((operator) => {
-  if (operator.name === 'important') {
-    const regex = new RegExp(operator.filter);
-    const filteredCities = data.cities.filter((entry) =>
-      entry.name.match(regex)
-    );
 
-    let populationSum = 0;
-    filteredCities.forEach((city) => {
-      populationSum += city.population;
-    });
-    let averagePopulation = (populationSum / filteredCities.length).toFixed(2);
-    let result = {
-      name: operator.name,
-      value: averagePopulation
-    };
-    results.push(result);
-  } else if (operator.name === 'information') {
-    const filteredArray = filterArray(cities, operator.filter);
-    console.log(filteredArray);
-    let sum = 0;
-    filteredArray.forEach((city) => (sum += city[operator.attrib]));
-    let result = {
-      name: operator.name,
-      value: sum
-    };
-    console.log(result);
+operations.operations.forEach((operator) => {
+  switch (operator.name) {
+    case 'important':
+      evaluateOperator(
+        filterArray(cities, operator.filter),
+        operator.func,
+        operator.attrib,
+        operator.name
+      );
+      break;
+    case 'information':
+      evaluateOperator(
+        filterArray(cities, operator.filter),
+        operator.func,
+        operator.attrib,
+        operator.name
+      );
+      break;
   }
 });
+
+function evaluateOperator(data, mathFunction, attribut, name) {
+  switch (mathFunction) {
+    case 'average':
+      const average = calculateAverage(data, attribut).toFixed(2);
+      results.push(createResObject(name, average));
+      break;
+    case 'sum':
+      const sum = calculateSum(data, attribut).toFixed(2);
+      results.push(createResObject(name, sum));
+      break;
+  }
+}
 
 function filterArray([...cities], filter) {
   const regex = new RegExp(filter);
   return cities.filter((entry) => entry.name.match(regex));
+}
+
+function calculateSum([...values], attribut) {
+  let sum = 0;
+  values.forEach((item) => {
+    sum += item[attribut];
+  });
+  return sum;
+}
+
+function calculateAverage([...values], attribut) {
+  const sum = calculateSum(values, attribut);
+  return sum / values.length;
+}
+
+function createResObject(name, value) {
+  return {
+    name,
+    value
+  };
 }
