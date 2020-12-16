@@ -21,7 +21,7 @@ for (const key in dataSource) {
 console.log(results);
 
 /**
- * @desc Call Math functions to evaluate the operation
+ * @desc Call math functions to evaluate the operation
  * @param {array} data Must be a array of objects
  * @param {string} func The function to be evaluated, this can be "min", "max", "sum" or "average".
  * @param {string} attribut Name of the property to be evaluated.
