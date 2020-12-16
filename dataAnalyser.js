@@ -18,8 +18,6 @@ for (const key in dataSource) {
   });
 }
 
-console.log(results);
-
 /**
  * @desc Call math functions to evaluate the operation
  * @param {array} data Must be a array of objects
@@ -42,7 +40,12 @@ function evaluateOperation(data, func, attribut, type) {
       console.log('Invalid input');
   }
 }
-
+/**
+ * @desc Returns a new array only containing data which matched the given regex
+ * @param {array} data Array that will be filtered
+ * @param {string} filter regex pattern.
+ * @return {array} only containing data that matched the regex
+ */
 function filterArrayByMatch([...data], filter) {
   const regex = new RegExp(filter);
   return data.filter((entry) => entry.name.match(regex));
@@ -109,13 +112,13 @@ function getMax([...values], attribut, type) {
   }
 }
 
-createJsonFile(results, 'results.json');
+createJsonFile('results.json');
 
-function createJsonFile([...data], filename) {
+function createJsonFile(filename) {
   try {
     fs.writeFile(
       filename,
-      JSON.stringify(createJsonResult(results), null, 2),
+      JSON.stringify(formattedObject(results), null, 2),
       (err) => {
         if (err) throw err;
         console.log('the file has been saved');
@@ -125,8 +128,14 @@ function createJsonFile([...data], filename) {
     console.log(err);
   }
 }
-function createJsonResult(arrOfObjects) {
+
+/**
+ * @desc Returns the correctly formatted object
+ * @param {array} data Data for the object
+ * @return {object} correctly formatted object
+ */
+function formattedObject([...data]) {
   return {
-    results: arrOfObjects
+    results: data
   };
 }
