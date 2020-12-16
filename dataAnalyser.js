@@ -51,11 +51,32 @@ operations.operations.forEach((operator) => {
     }
   }
 });
+
+const jsonResult = {
+  results
+};
+
 try {
-  fs.writeFile('testResults.json', JSON.stringify(results, null, 2), (err) => {
-    if (err) throw err;
-    console.log('the file has been saved');
-  });
+  fs.writeFile(
+    'testResults.json',
+    JSON.stringify(
+      jsonResult,
+      null,
+      /*    To do: Add trailing zeros for integer values
+        (key, value) => {
+          const missingTrailingZeros = value.results.filter(
+            (item) => !item.value.toString().includes('.')
+          );
+          console.log(missingTrailingZeros);
+          missingTrailerZeros.value.to
+        }, */
+      2
+    ),
+    (err) => {
+      if (err) throw err;
+      console.log('the file has been saved');
+    }
+  );
 } catch (err) {
   console.log(err);
 }
@@ -102,6 +123,6 @@ function calculateAverage([...values], attribut) {
 function createResObject(name, value) {
   return {
     name,
-    value
+    value: Number(parseFloat(value))
   };
 }
