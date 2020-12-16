@@ -4,6 +4,7 @@ const fs = require('fs');
 
 let results = [];
 
+// Execute all given operations on the data source.
 for (const key in dataSource) {
   const data = dataSource[key];
   operations.operations.map((operation) => {
@@ -17,51 +18,28 @@ for (const key in dataSource) {
   });
 }
 
-const jsonResult = {
-  results
-};
+console.log(results);
 
-try {
-  fs.writeFile(
-    'testResults.json',
-    JSON.stringify(
-      jsonResult,
-      null,
-      /*    To do: Add trailing zeros for integer values
-        (key, value) => {
-          const missingTrailingZeros = value.results.filter(
-            (item) => !item.value.toString().includes('.')
-          );
-          console.log(missingTrailingZeros);
-          missingTrailerZeros.value.to
-        }, */
-      2
-    ),
-    (err) => {
-      if (err) throw err;
-      console.log('the file has been saved');
-    }
-  );
-} catch (err) {
-  console.log(err);
-}
-
-function evaluateOperation(data, mathFunction, attribut, evaluationType) {
-  switch (mathFunction) {
+/**
+ * @desc Call Math functions to evaluate the operation
+ * @param {array} data Must be a array of objects
+ * @param {string} func The function to be evaluated, this can be "min", "max", "sum" or "average".
+ * @param {string} attribut Name of the property to be evaluated.
+ * @param {string} type Whether the selected attribute is a child node or an attribute
+ * @return {number} result of the calculation
+ */
+function evaluateOperation(data, func, attribut, type) {
+  switch (func) {
     case 'average':
-      const average = calculateAverage(data, attribut, evaluationType);
-      return average;
+      return calculateAverage(data, attribut, type);
     case 'sum':
-      const sum = calculateSum(data, attribut, evaluationType);
-      return sum;
+      return calculateSum(data, attribut, type);
     case 'min':
-      const min = getMin(data, attribut, evaluationType);
-      return min;
+      return getMin(data, attribut, type);
     case 'max':
-      const max = data.reduce((prev, curr) =>
-        prev[attribut] < curr[attribut] ? curr : prev
-      );
-      return max[attribut];
+      return getMax(data, attribut, type);
+    default:
+      console.log('Invalid input');
   }
 }
 
@@ -70,19 +48,33 @@ function filterArrayByMatch([...data], filter) {
   return data.filter((entry) => entry.name.match(regex));
 }
 
-function calculateSum([...values], attribut, type) {
-  if (type === 'attrib') {
-    let sum = values.reduce((a, b) => a + b[attribut], 0);
-    return sum;
-  } else if (type === 'sub') {
-    const sum = values.reduce(
-      (a, b) => a + b.values.find((value) => value.name === attribut).value,
-      0
-    );
-    return sum;
-  }
+function createResObject(name, value) {
+  return {
+    name,
+    value: parseFloat(value)
+  };
 }
 
+function calculateAverage([...values], attribut, type) {
+  return calculateSum(values, attribut, type) / values.length;
+}
+
+function calculateSum([...values], attribut, type) {
+  return type === 'attrib'
+    ? values.reduce((a, b) => a + b[attribut], 0)
+    : values.reduce(
+        (a, b) => a + b.values.find((value) => value.name === attribut).value,
+        0
+      );
+}
+
+/**
+ * @desc Calculate the minimum
+ * @param {array} values To be calculated values
+ * @param {string} attribut Name of the property to be evaluated.
+ * @param {string} type Whether the selected attribute is a child node or an attribute
+ * @return {number} Minimum value
+ */
 function getMin([...values], attribut, type) {
   if (type === 'attrib') {
     const min = values.reduce((prev, curr) =>
@@ -90,23 +82,51 @@ function getMin([...values], attribut, type) {
     );
     return min[attribut];
   } else if (type === 'sub') {
-    const min = values.reduce((prev, curr) =>
-      prev < (curr.values.find((value) => value.name === attribut).value, 0)
-        ? prev
-        : curr.values.find((value) => value.name === attribut).value
+    return values.reduce((a, b) =>
+      a < (b.values.find((value) => value.name === attribut).value, 0)
+        ? a
+        : b.values.find((value) => value.name === attribut).value
     );
-    return min;
+  }
+}
+/**
+ * @desc Calculate the maximum
+ * @param {array} values To be calculated values
+ * @param {string} attribut Name of the property to be evaluated.
+ * @param {string} type Whether the selected attribute is a child node or an attribute
+ * @return {number} maximum value
+ */
+function getMax([...values], attribut, type) {
+  if (type === 'attrib') {
+    const max = values.reduce((a, b) => (a[attribut] > b[attribut] ? a : b));
+    return max[attribut];
+  } else if (type === 'sub') {
+    return values.reduce((a, b) =>
+      a > (b.values.find((value) => value.name === attribut).value, 0)
+        ? a
+        : b.values.find((value) => value.name === attribut).value
+    );
   }
 }
 
-function calculateAverage([...values], attribut, type) {
-  const sum = calculateSum(values, attribut, type);
-  return sum / values.length;
-}
+createJsonFile(results, 'results.json');
 
-function createResObject(name, value) {
+function createJsonFile([...data], filename) {
+  try {
+    fs.writeFile(
+      filename,
+      JSON.stringify(createJsonResult(results), null, 2),
+      (err) => {
+        if (err) throw err;
+        console.log('the file has been saved');
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
+function createJsonResult(arrOfObjects) {
   return {
-    name,
-    value: Number(parseFloat(value))
+    results: arrOfObjects
   };
 }

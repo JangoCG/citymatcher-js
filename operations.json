@@ -2,7 +2,7 @@
   "operations": [
     {
       "name": "important",
-      "type": "attrib",
+      "type": "sub",
       "func": "average",
       "attrib": "population",
       "filter": "M.*"
@@ -23,7 +23,7 @@
     },
     {
       "name": "future",
-      "type": "attrib",
+      "type": "sub",
       "func": "max",
       "attrib": "population",
       "filter": ".*e.*n.*"
