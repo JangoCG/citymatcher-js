@@ -1,40 +1,83 @@
 const data = require('./data.json');
 const operations = require('./operations.json');
+const fs = require('fs');
 
 const { cities } = data;
 let results = [];
 
 operations.operations.forEach((operator) => {
   switch (operator.name) {
-    case 'important':
-      evaluateOperator(
+    case 'important': {
+      const result = evaluateOperator(
         filterArray(cities, operator.filter),
         operator.func,
         operator.attrib,
         operator.name
-      );
+      ).toFixed(2);
+      results.push(createResObject(operator.name, result));
       break;
-    case 'information':
-      evaluateOperator(
+    }
+    case 'information': {
+      const result = evaluateOperator(
         filterArray(cities, operator.filter),
         operator.func,
         operator.attrib,
         operator.name
-      );
+      ).toFixed(2);
+      results.push(createResObject(operator.name, result));
       break;
+    }
+
+    case 'for': {
+      const result = evaluateOperator(
+        filterArray(cities, operator.filter),
+        operator.func,
+        operator.attrib,
+        operator.name
+      ).toFixed(2);
+      results.push(createResObject(operator.name, result));
+      break;
+    }
+
+    case 'future': {
+      const result = evaluateOperator(
+        filterArray(cities, operator.filter),
+        operator.func,
+        operator.attrib,
+        operator.name
+      ).toFixed(2);
+      results.push(createResObject(operator.name, result));
+      break;
+    }
   }
 });
+try {
+  fs.writeFile('testResults.json', JSON.stringify(results, null, 2), (err) => {
+    if (err) throw err;
+    console.log('the file has been saved');
+  });
+} catch (err) {
+  console.log(err);
+}
 
-function evaluateOperator(data, mathFunction, attribut, name) {
+function evaluateOperator(data, mathFunction, attribut) {
   switch (mathFunction) {
     case 'average':
-      const average = calculateAverage(data, attribut).toFixed(2);
-      results.push(createResObject(name, average));
-      break;
+      const average = calculateAverage(data, attribut);
+      return average;
     case 'sum':
-      const sum = calculateSum(data, attribut).toFixed(2);
-      results.push(createResObject(name, sum));
-      break;
+      const sum = calculateSum(data, attribut);
+      return sum;
+    case 'min':
+      const min = data.reduce((prev, curr) =>
+        prev[attribut] < curr[attribut] ? prev : curr
+      );
+      return min[attribut];
+    case 'max':
+      const max = data.reduce((prev, curr) =>
+        prev[attribut] < curr[attribut] ? curr : prev
+      );
+      return max[attribut];
   }
 }
 
