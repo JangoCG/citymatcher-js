@@ -1,52 +1,76 @@
 {
-   "cities":[
-      {
-         "name":"Stuttgart",
-         "population":601646,
-         "area":207.36,
-         "values" : [{"name" : "population", "value" : 601646}, {"name" : "area", "value" : 207.36}]
-      },
-      {
-         "name":"Moskau",
-         "population":10563038,
-         "area":1081.5,
-         "values" : [{"name" : "population", "value" : 10563038}, {"name" : "area", "value" : 1081.5}]
-      },
-      {
-         "name":"Washington DC",
-         "population":588292,
-         "area":3323.7,
-         "values" : [{"name" : "population", "value" : 588292}, {"name" : "area", "value" : 3323.7}]
-      },
-      {
-         "name":"München",
-         "population":1330440,
-         "area":310.43,
-         "values" : [{"name" : "population", "value" : 1330440}, {"name" : "area", "value" : 310.43}]
-      },
-      {
-         "name":"Berlin",
-         "population":3440441,
-         "area":891.85,
-         "values" : [{"name" : "population", "value" : 3440441}, {"name" : "area", "value" : 891.85}]
-      },
-      {
-         "name":"Hamburg",
-         "population":1774224,
-         "area":755.264,
-         "values" : [{"name" : "population", "value" : 1774224}, {"name" : "area", "value" : 755.264}]
-      },
-      {
-         "name":"Mainz",
-         "population":197778,
-         "area":97.76,
-         "values" : [{"name" : "population", "value" : 197778}, {"name" : "area", "value" : 97.76}]
-      },
-      {
-         "name":"Regensburg",
-         "population":134218,
-         "area":80.76,
-         "values" : [{"name" : "population", "value" : 134218}, {"name" : "area", "value" : 80.76}]
-      }
-   ]
+  "cities": [
+    {
+      "name": "Stuttgart",
+      "population": 601646,
+      "area": 207.36,
+      "values": [
+        { "name": "population", "value": 601646 },
+        { "name": "area", "value": 207.36 }
+      ]
+    },
+    {
+      "name": "Moskau",
+      "population": 10563038,
+      "area": 1081.5,
+      "values": [
+        { "name": "population", "value": 10563038 },
+        { "name": "area", "value": 1081.5 }
+      ]
+    },
+    {
+      "name": "Washington DC",
+      "population": 588292,
+      "area": 3323.7,
+      "values": [
+        { "name": "population", "value": 588292 },
+        { "name": "area", "value": 3323.7 }
+      ]
+    },
+    {
+      "name": "München",
+      "population": 1330440,
+      "area": 310.43,
+      "values": [
+        { "name": "population", "value": 1330440 },
+        { "name": "area", "value": 310.43 }
+      ]
+    },
+    {
+      "name": "Berlin",
+      "population": 3440441,
+      "area": 891.85,
+      "values": [
+        { "name": "population", "value": 3440441 },
+        { "name": "area", "value": 891.85 }
+      ]
+    },
+    {
+      "name": "Hamburg",
+      "population": 1774224,
+      "area": 755.264,
+      "values": [
+        { "name": "population", "value": 1774224 },
+        { "name": "area", "value": 755.264 }
+      ]
+    },
+    {
+      "name": "Mainz",
+      "population": 197778,
+      "area": 97.76,
+      "values": [
+        { "name": "population", "value": 197778 },
+        { "name": "area", "value": 97.76 }
+      ]
+    },
+    {
+      "name": "Regensburg",
+      "population": 134218,
+      "area": 80.76,
+      "values": [
+        { "name": "population", "value": 134218 },
+        { "name": "area", "value": 80.76 }
+      ]
+    }
+  ]
 }

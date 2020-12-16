@@ -5,83 +5,46 @@ const fs = require('fs');
 const { cities } = data;
 let results = [];
 
-operations.operations.forEach((operator) => {
-  switch (operator.name) {
-    case 'important': {
-      const result = evaluateOperator(
-        filterArray(cities, operator.filter),
-        operator.func,
-        operator.attrib,
-        operator.name
-      ).toFixed(2);
-      results.push(createResObject(operator.name, result));
-      break;
-    }
-    case 'information': {
-      const result = evaluateOperator(
-        filterArray(cities, operator.filter),
-        operator.func,
-        operator.attrib,
-        operator.name
-      ).toFixed(2);
-      results.push(createResObject(operator.name, result));
-      break;
-    }
-
-    case 'for': {
-      const result = evaluateOperator(
-        filterArray(cities, operator.filter),
-        operator.func,
-        operator.attrib,
-        operator.name
-      ).toFixed(2);
-      results.push(createResObject(operator.name, result));
-      break;
-    }
-
-    case 'future': {
-      const result = evaluateOperator(
-        filterArray(cities, operator.filter),
-        operator.func,
-        operator.attrib,
-        operator.name
-      ).toFixed(2);
-      results.push(createResObject(operator.name, result));
-      break;
-    }
-  }
+operations.operations.map((operation) => {
+  const result = evaluateOperation(
+    filterArray(cities, operation.filter),
+    operation.func,
+    operation.attrib,
+    operation.name
+  ).toFixed(2);
+  results.push(createResObject(operation.name, result));
 });
 
 const jsonResult = {
   results
 };
 
-try {
-  fs.writeFile(
-    'testResults.json',
-    JSON.stringify(
-      jsonResult,
-      null,
-      /*    To do: Add trailing zeros for integer values
-        (key, value) => {
-          const missingTrailingZeros = value.results.filter(
-            (item) => !item.value.toString().includes('.')
-          );
-          console.log(missingTrailingZeros);
-          missingTrailerZeros.value.to
-        }, */
-      2
-    ),
-    (err) => {
-      if (err) throw err;
-      console.log('the file has been saved');
-    }
-  );
-} catch (err) {
-  console.log(err);
-}
+// try {
+//   fs.writeFile(
+//     'testResults.json',
+//     JSON.stringify(
+//       jsonResult,
+//       null,
+//       /*    To do: Add trailing zeros for integer values
+//         (key, value) => {
+//           const missingTrailingZeros = value.results.filter(
+//             (item) => !item.value.toString().includes('.')
+//           );
+//           console.log(missingTrailingZeros);
+//           missingTrailerZeros.value.to
+//         }, */
+//       2
+//     ),
+//     (err) => {
+//       if (err) throw err;
+//       console.log('the file has been saved');
+//     }
+//   );
+// } catch (err) {
+//   console.log(err);
+// }
 
-function evaluateOperator(data, mathFunction, attribut) {
+function evaluateOperation(data, mathFunction, attribut) {
   switch (mathFunction) {
     case 'average':
       const average = calculateAverage(data, attribut);
